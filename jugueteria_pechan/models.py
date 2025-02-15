@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models.signals import m2m_changed
+from django.dispatch import receiver
 
 
 class Cliente(models.Model):
@@ -37,9 +39,15 @@ class Articulo(models.Model):
     
 class Compra(models.Model):
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
-    articulo = models.ForeignKey(Articulo, on_delete=models.SET_NULL, null=True)
-    fecha_compra = models.DateTimeField(auto_now_add=True)
-    cantidad = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    
+    articulo = models.ManyToManyField(Articulo)
+    fecha_compra = models.DateField()
+    total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+
     def __str__(self):
-        return f"Venta {self.id} - Cliente: {self.cliente}"
+        return f"Compra {self.id} - Cliente: {self.cliente.nombre} - Total: {self.total}"
+
+@receiver(m2m_changed, sender=Compra.articulo.through)
+def update_total(sender, instance, action, **kwargs):
+    if action in ['post_add', 'post_remove', 'post_clear']:
+        instance.total = sum(articulo.precio for articulo in instance.articulo.all())
+        instance.save()

@@ -1,6 +1,6 @@
 from django.template import loader
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Articulo, Cliente, Compra
 from .forms import ArticuloForm, ClienteForm, CompraForm
 from django.contrib.auth.views import LoginView
@@ -127,34 +127,41 @@ def category_list(request):
 
 
 def sale_list(request):
-    sales = Compra.objects.all()
-    return render(request, 'sale_list.html', {'sales':sales})
+    compras = Compra.objects.all().order_by('-fecha_compra')
+    return render(request, 'sale_list.html', {'compras':compras})
 
-                                                                            
+@login_required
 def add_sale(request):
     if request.method == 'POST':
         form = CompraForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
-            return redirect ('jugueteria_pechan:index')
+            compra = form.save(commit=False)
+            compra.save()
+            compra.articulo.set(form.cleaned_data['articulo'])
+            compra.total = sum(articulo.precio for articulo in compra.articulo.all())
+            compra.save()
+            return redirect('sale_list')
     else:
         form = CompraForm()
-    return render(request, 'sale_form.html', {'form':form})
+    articulos = Articulo.objects.all()
+    return render(request, 'sale_form.html', {'form': form, 'articulos': articulos})
 
 @login_required
 def edit_sale(request, compra_id):
-    compra = Compra.objects.get(pk = compra_id)
+    compra = get_object_or_404(Compra, pk=compra_id)
     if request.method == 'POST':
         form = CompraForm(request.POST, request.FILES, instance=compra)
         if form.is_valid():
             form.save()
-            return redirect('jugueteria_pechan:index')
+            return redirect('jugueteria_pechan:sale_list')
     else:
         form = CompraForm(instance=compra)
-    return render (request, 'sale_form.html', {'form': form})
+    articulos = Articulo.objects.all()
+    return render(request, 'sale_form.html', {'form': form, 'articulos': articulos})
    
 @login_required
 def delete_sale(request, compra_id):
     sale = Compra.objects.get(pk = compra_id)
     sale.delete()
     return redirect("jugueteria_pechan:index")
+

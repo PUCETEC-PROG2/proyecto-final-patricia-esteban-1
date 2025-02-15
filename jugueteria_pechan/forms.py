@@ -41,16 +41,26 @@ class ArticuloForm(forms.ModelForm):
 
 
 class CompraForm(forms.ModelForm):
+    articulo = forms.ModelMultipleChoiceField(
+        queryset=Articulo.objects.all(),
+        widget=forms.CheckboxSelectMultiple(),
+        required=True,
+        label="Artículo"
+    )
+    
+    fecha_compra = forms.DateField(
+        widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+        label="Fecha de compra"
+    )
+
     class Meta:
         model = Compra
-        fields ='__all__'
+        fields = ['cliente', 'articulo', 'fecha_compra']  
         labels = {
             'cliente': 'Cliente',
-            'articulo': 'Articulo',
-            'cantidad': 'Cantidad',
+            'articulo': 'Artículo',
+            'fecha_compra': 'Fecha de compra',
         }
         widgets = {
             'cliente': forms.Select(attrs={'class': 'form-control'}),
-            'articulo': forms.Select(attrs={'class': 'form-control'}),
-	        'cantidad': forms.NumberInput(attrs={'class':'form-control'})	
         }

@@ -1,17 +1,60 @@
 {% extends "base.html" %}
 
-<!-- Este codigo hace una lista de los clientes para mostrarla en "lista de clientes" -->
+{% block title %}Registrar/Editar Venta{% endblock title %}
 
-{% block title %}Registrar Venta{% endblock title %}
 {% block content %}
+<div class="container">
+    <h1 class="text-center mb-4 text-white-heading">Registrar/Editar Venta</h1>
 
-    <ul padding="200px">
-        <h1 class="text-center mb-4 text-white-heading">Registrar Venta</h1>
+    <form method="post" enctype="multipart/form-data" class="text-white" id="sale-form">
+        {% csrf_token %}
 
-        <form method="post" enctype="multipart/form-data" class="text-white">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn btn-primary">Registrar Venta</button>
-        </form>
-    </ul>
+        <div class="mb-3">
+            <label for="id_cliente" class="form-label">Cliente:</label>
+            {{ form.cliente }}
+        </div>
+
+        <div class="mb-3">
+            <label for="id_articulos" class="form-label">Productos:</label>
+            {% for articulo in articulos %}
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="articulo_{{ articulo.pk }}" name="articulo" value="{{ articulo.pk }}" data-price="{{ articulo.precio }}">
+                    <label class="form-check-label" for="articulo_{{ articulo.pk }}">
+                        {{ articulo.nombre }} - ${{ articulo.precio }}
+                    </label>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="mb-3">
+            <label for="total" class="form-label">Total:</label>
+            <input type="text" id="total" class="form-control" value="0.00" readonly>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Guardar Venta</button>
+    </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    const totalField = document.getElementById('total');
+
+    function calculateTotal() {
+        let total = 0;
+        checkboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                total += parseFloat(checkbox.getAttribute('data-price'));
+            }
+        });
+        totalField.value = total.toFixed(2);
+    }
+
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', calculateTotal);
+    });
+
+    calculateTotal();  // Initial calculation
+});
+</script>
 {% endblock content %}
