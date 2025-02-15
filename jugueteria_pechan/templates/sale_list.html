@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Lista de Ventas{% endblock title %}
+
+{% block content %}
+    {% load static %}
+    <h1 class="text-center mb-4 text-white-heading">Lista de Ventas</h1>
+
+    <div class="container d-flex justify-content-center">
+        <div class="list-group w-100" style="max-width: 800px;">
+            {% for compra in compras %}
+                <div class="list-group-item border border-white bg-gray mb-3">
+                    <h5 class="mb-3">Venta {{ forloop.counter }}</h5>
+                    <p><strong>Cliente:</strong> {{ compra.cliente }}</p>
+                    <p><strong>Fecha:</strong> {{ compra.fecha_compra }}</p>
+ 	  	            <p><strong>Productos Vendidos:</strong> {{ compra.articulo }}</p>
+                    <p><strong>Total:</strong> {{ compra.cantidad }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock content %}
+~                           

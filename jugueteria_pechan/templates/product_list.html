@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Lista de Productos{% endblock title %}
+
+{% block head %}
+    {{ block.super }}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/product.css' %}">
+{% endblock head %}
+
+{% block content %}
+    <h1 class="text-center mb-4 text-white-heading">Listado de Productos</h1>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for articulo in articulos %}
+            <div class="col">
+                <div class="card h-100">
+                    <img src="{{ articulo.picture.url }}" class="card-img-top" alt="{{ articulo.nombre }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ articulo.nombre }}</h5>
+                        <p class="card-text">Descripción: {{ articulo.descripcion }}</p>
+                        <p class="card-text">Precio: {{ articulo.precio }}</p>
+                        <p class="card-text">Stock: {{ articulo.stock }}</p>
+                        <p class="card-text">Categoria: {{ articulo.category }}</p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock content %}

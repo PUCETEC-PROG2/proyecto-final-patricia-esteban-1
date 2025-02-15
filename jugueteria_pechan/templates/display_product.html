@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %} {{articulo}} {% endblock title %}
+{% block content %}
+    <h1 class="text-center mb-4 text-white-heading">{{ articulo | capfirst }}</h1>
+
+    <div class="col">
+        <div class="card h-100">
+            <img src="{{ articulo.picture.url }}" class="card-img-top" alt="{{ articulo.nombre }}" >
+            <div class="card-body">
+                <p class="card-text">Descripción: {{ articulo.descripcion }}</p>
+                <p class="card-text">Precio: {{ articulo.precio }}</p>
+                <p class="card-text">Stock: {{ articulo.stock }}</p>
+                <p class="card-text">Categoria: {{ articulo.category }}</p>
+                <a href="/" class="btn btn-primary">Regresar</a>
+
+            </div>
+        </div>
+    </div>
+
+  
+
+
+{% endblock content %}

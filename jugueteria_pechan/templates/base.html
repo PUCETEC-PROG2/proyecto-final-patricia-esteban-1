@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <title>{% block title %}{% endblock %}</title>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script> 
+    <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" integrity="sha384-rbsA4uWz4qA1y9xFiDhwNTnqok3vyykqcf51dnZm+zKP9ENb/jhdzjHgQ5A6dcrj" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/custom_styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/logoutboton.css' %}">
+
+    <link rel="icon" href="{% static "logo.png" %}" type="image/png">
+</head>
+<body>
+    <div class="container">
+        <div>
+            <!-- Navigation Bar -->
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark"> 
+                <a class="navbar-brand" href="#"></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                  <ul class="navbar-nav">
+                    <li class="nav-item active">
+                      <a class="nav-link" href="{% url 'jugueteria_pechan:index' %}">Inicio <span class="sr-only">(current)</span></a>
+                    </li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item dropdown active">
+                      <a class="nav-link dropdown-toggle" href="{% url 'jugueteria_pechan:client_list' %}" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Clientes
+                      </a>
+                      <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <li><a class="dropdown-item" href="{% url 'jugueteria_pechan:client_list' %}">Listado de Clientes</a></li>
+                        <li><a class="dropdown-item" href="{% url 'jugueteria_pechan:add_client' %}">Agregar Clientes</a></li>
+                      </ul>
+                    </li>
+                    <li class="nav-item dropdown active">
+                      <a class="nav-link dropdown-toggle" href="{% url 'jugueteria_pechan:sale_list' %}" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">Ventas                                            
+                      </a>                                                  
+                      <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">                                                               
+                        <li><a class="dropdown-item" href="{% url 'jugueteria_pechan:sale_list' %}">Listado de Ventas</a></li>                                
+                        <li><a class="dropdown-item" href="{% url 'jugueteria_pechan:add_sale' %}">Agregar Venta</a></li>                                    
+                      </ul> 			
+                    </li>
+                    <li class="nav-item dropdown active">
+                      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Productos
+                      </a>
+                      <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <li><a class="dropdown-item" href="{% url 'jugueteria_pechan:category_view' '0 a 6 meses' %}">0 a 6 meses</a></li>
+                        <li><a class="dropdown-item" href="{% url 'jugueteria_pechan:category_view' '6 a 12 meses' %}">6 a 12 meses</a></li>
+                        <li><a class="dropdown-item" href="{% url 'jugueteria_pechan:category_view' '1 a 2 años' %}">1 a 2 años</a></li>
+                        <li><a class="dropdown-item" href="{% url 'jugueteria_pechan:category_view' '3 a 5 años' %}">3 a 5 años</a></li>
+                        <li><a class="dropdown-item" href="{% url 'jugueteria_pechan:category_view' '5 a 8 años' %}">5 a 8 años</a></li>
+                        <li><a class="dropdown-item" href="{% url 'jugueteria_pechan:category_view' '11 a 14 años' %}">11 a 14 años</a></li>
+                        <li><a class="dropdown-item" href="{% url 'jugueteria_pechan:category_view' 'ropa' %}">Ropa</a></li>
+                        <li><a class="dropdown-item" href="{% url 'jugueteria_pechan:category_view' 'muebles' %}">Muebles</a></li>
+                        <li><a class="dropdown-item" href="{% url 'jugueteria_pechan:category_view' 'herramientas' %}">Herramientas</a></li>
+                        <li><a class="dropdown-item" href="{% url 'jugueteria_pechan:category_view' 'objetos decorativos' %}">Objetos Decorativos</a></li>
+                      </ul>
+                    </li>
+
+                    <li class="nav-item active">
+                      <a class="nav-link" href="{% url "jugueteria_pechan:create_product" %}">Agregar Producto</a>
+                    </li>
+                    <li class="nav-item">
+                      <form id="logout-form" method="POST" action="{% url 'jugueteria_pechan:logout' %}" style="display: inline;">
+                          {% csrf_token %}
+                          <button type="submit" class="nav-link logout-button">
+                              Logout
+                          </button>
+                      </form>
+                    </li>
+                  
+                  
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'jugueteria_pechan:login' %}">Login</a>
+                    </li>
+                    {% endif %}
+                  </ul>
+                </div>
+            </nav>
+            {% include 'header.html' %}
+        </div>
+        {% block content %}{% endblock content %}
+    </div>
+    <footer class="footer">
+        <div class="container">
+            <p class="#" >© 2025 Jugueteria Pechan. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+</body>
+</html>
