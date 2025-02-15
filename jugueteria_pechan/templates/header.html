@@ -1,0 +1,40 @@
+<header>
+    <script>
+        // Initialization for ES Users
+        import { Collapse, Ripple, initMDB } from "mdb-ui-kit";
+        initMDB({ Collapse, Ripple });
+    </script>
+    {% load static %}
+    <!-- Enlaza el archivo CSS externo -->
+    <link rel="stylesheet" href="{% static 'css/header.css' %}">
+    <div
+        id="intro-example"
+        class="p-5 text-center bg-image"
+		style="background-image: url('https://4kwallpapers.com/images/wallpapers/doraemon-cartoon-tv-2880x1800-13862.png'); height: 75vh; padding-bottom: 200px; margin-top:50px; >
+        <div class="mask">
+            <div class="d-flex justify-content-center align-items-center h-100">
+                <div class="text-black">
+                    <h1 class="mb-3">JUGUETERÍA P-CHAN</h1>
+                    <h5 class="mb-4">Aquí podrás manejar el inventario de la jugueteria</h5>  
+
+                    <a
+                        data-mdb-ripple-init
+                        class="btn btn-outline-light btn-lg m-2"
+                        href="https://www.youtube.com/watch?v=s-tmgzoyyDU"
+                        role="button"
+                        rel="nofollow"
+                        target="_blank"
+                    >P-Chan Bailando</a>
+                    <a
+                        data-mdb-ripple-init
+                        class="btn btn-outline-light btn-lg m-2"
+                        href="https://www.youtube.com/watch?v=Y9Wqm6l2yqs"
+                        target="_blank"
+                        role="button"
+                    >Doreamon Intro</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Background image -->
+</header>

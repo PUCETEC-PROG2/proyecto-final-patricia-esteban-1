@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="text-center mb-4 text-white-heading">{{ category_name }}</h1>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for articulo in articulos %}
+            <div class="col">
+                <div class="card h-100">
+                    <img src="{{ articulo.picture.url }}" class="card-img-top" alt="{{ articulo.name }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ articulo.name }}</h5>
+                        <p class="card-text">Descripción: {{ articulo.descripcion }}</p>
+                        <p class="card-text">Precio: ${{ articulo.precio }}</p>
+                        <p class="card-text">Stock: {{ articulo.stock }}</p>
+                        <p class="card-text">Categoria: {{ articulo.category }}</p>
+                        <a href="product/{{articulo.id}}" class="btn btn-primary">
+                            <i class="fa-solid fa-eye"></i>
+                        </a>
+                        <a href="edit_product/{{articulo.id}}" class="btn btn-primary">
+                            <i class="fa-solid fa-pencil"></i>
+                        </a>
+                        <a href="delete_product/{{articulo.id}}" class="btn btn-danger">
+                            <i class="fa-solid fa-trash"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock content %}
